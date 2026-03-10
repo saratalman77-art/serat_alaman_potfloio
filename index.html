@@ -360,6 +360,24 @@
             line-height: 1.6;
         }
 
+        /* portfolio link style (for both cards) */
+        .portfolio-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1.2rem;
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+            border-bottom: 1px solid transparent;
+            transition: var(--transition);
+        }
+
+        .portfolio-link:hover {
+            border-bottom-color: var(--accent);
+            gap: 1rem;
+        }
+
         /* ---------- SKILLS SECTION ---------- */
         .skills-wrapper {
             display: grid;
@@ -615,7 +633,7 @@
             color: var(--accent);
         }
 
-        /* ---------- HIRE ME SECTION (UPDATED FORM) ---------- */
+        /* ---------- HIRE ME SECTION ---------- */
         .hire-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -775,8 +793,7 @@
             <div class="greeting">
                 Hi, I'm Sarat Alman <i class="fas fa-hand-wave"></i>
             </div>
-            <h1>Senior Data Engineer
-    </h1>
+            <h1>Senior Data Engineer</h1>
             <div class="intro-tags">
                 <span class="tag">AWS</span>
                 <span class="tag">Azure</span>
@@ -797,7 +814,7 @@
             </div>
         </section>
 
-        <!-- FEATURED SECTION -->
+        <!-- FEATURED SECTION (fixed links) -->
         <section id="featured">
             <h2>Featured</h2>
             <div class="featured-grid">
@@ -805,12 +822,14 @@
                     <i class="fab fa-github"></i>
                     <h3>GitHub</h3>
                     <p>Explore my open-source contributions, data pipelines, and sample projects on GitHub. I regularly share code for streaming, lakehouse architectures, and GenAI experiments.</p>
+                    <a href="https://github.com/saratalman77" target="_blank" class="portfolio-link">github.com/saratalman77 <i class="fas fa-arrow-right"></i></a>
                 </div>
                 <div class="feature-card">
-    <i class="fas fa-globe"></i>
-    <h3>Personal Website</h3>
-    <p>Visit my portfolio site for in-depth articles, case studies, and the latest updates on my work in data engineering and architecture.</p>
-    <a href="https://saratalman77-art.github.io/Serat_Alman_website/" target="_blank"
+                    <i class="fas fa-globe"></i>
+                    <h3>Personal Website</h3>
+                    <p>Visit my portfolio site for in-depth articles, case studies, and the latest updates on my work in data engineering and architecture.</p>
+                    <a href="https://saratalman77-art.github.io/Serat_Alman_website/" target="_blank" class="portfolio-link">saratalman77-art.github.io <i class="fas fa-arrow-right"></i></a>
+                </div>
             </div>
         </section>
 
@@ -980,7 +999,7 @@
             </div>
         </section>
 
-        <!-- HIRE ME (UPDATED FORM) -->
+        <!-- HIRE ME -->
         <section id="contact">
             <h2>Let's Connect</h2>
             <div class="hire-grid">
@@ -1230,7 +1249,4 @@
         });
     </script>
 </body>
-
 </html>
-
-
