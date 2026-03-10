@@ -1,0 +1,1232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sarat Alman · Data Platform Architect</title>
+    <!-- Font Awesome 6 (free) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Font: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300..700&display=swap" rel="stylesheet">
+    <style>
+        /* ---------- RESET & THEME VARIABLES ---------- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Light theme (default) */
+            --bg-primary: #f8fafc;
+            --bg-secondary: #ffffff;
+            --bg-card: #ffffff;
+            --bg-side: #f1f5f9;
+            --text-primary: #0f172a;
+            --text-secondary: #334155;
+            --border-light: #e2e8f0;
+            --accent: #e31b23;
+            --accent-dim: rgba(227, 27, 35, 0.1);
+            --shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+            --transition: all 0.25s cubic-bezier(0.2, 0, 0, 1);
+            --skill-bg: linear-gradient(145deg, #ffffff, #f0f2f5);
+        }
+
+        body.dark {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #111111;
+            --bg-card: #111111;
+            --bg-side: #0d0d0d;
+            --text-primary: #f0f2f5;
+            --text-secondary: #a0a8b3;
+            --border-light: #262626;
+            --accent: #e31b23;
+            --accent-dim: rgba(227, 27, 35, 0.15);
+            --shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+            --skill-bg: linear-gradient(145deg, #1a1a1a, #0f0f0f);
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            line-height: 1.5;
+            font-size: 16px;
+            transition: background-color 0.3s, color 0.3s;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* ---------- ANIMATED LIGHTNING BACKGROUND ---------- */
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        .lightning {
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: 
+                radial-gradient(circle at 20% 30%, var(--accent) 0%, transparent 20%),
+                radial-gradient(circle at 80% 70%, var(--accent) 0%, transparent 25%),
+                repeating-linear-gradient(45deg, transparent 0%, transparent 10%, rgba(227,27,35,0.03) 10%, rgba(227,27,35,0.03) 20%);
+            animation: lightningMove 15s infinite alternate ease-in-out;
+        }
+
+        @keyframes lightningMove {
+            0% { transform: translate(-5%, -5%) scale(1); }
+            100% { transform: translate(5%, 5%) scale(1.1); }
+        }
+
+        /* ---------- STYLISH TOP MENU ---------- */
+        .navbar {
+            position: sticky;
+            top: 0;
+            background: rgba(17, 17, 17, 0.7);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-light);
+            padding: 0.8rem 2rem;
+            z-index: 100;
+            box-shadow: var(--shadow);
+        }
+
+        body:not(.dark) .navbar {
+            background: rgba(255, 255, 255, 0.7);
+        }
+
+        .nav-container {
+            max-width: 1300px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-icon {
+            font-size: 1.8rem;
+            color: var(--accent);
+            transition: transform 0.3s ease;
+        }
+        .logo-icon:hover {
+            transform: rotate(10deg) scale(1.1);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .nav-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            padding: 0.6rem 1.2rem;
+            border-radius: 40px;
+            transition: var(--transition);
+            border: 1px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::before {
+            width: 70%;
+        }
+
+        .nav-link:hover {
+            background: var(--accent-dim);
+            border-color: var(--accent);
+            color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .theme-toggle {
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: 40px;
+            padding: 0.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .theme-toggle i {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            transition: var(--transition);
+        }
+
+        .theme-toggle:hover {
+            border-color: var(--accent);
+            transform: rotate(15deg);
+        }
+
+        .theme-toggle:hover i {
+            color: var(--accent);
+        }
+
+        /* ---------- MAIN CONTAINER ---------- */
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 2rem 2rem 4rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* ---------- INTRO SECTION ---------- */
+        .intro {
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .greeting {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .greeting i {
+            color: var(--accent);
+            animation: wave 2s infinite;
+            transform-origin: 70% 70%;
+        }
+
+        @keyframes wave {
+            0% { transform: rotate(0deg); }
+            10% { transform: rotate(14deg); }
+            20% { transform: rotate(-8deg); }
+            30% { transform: rotate(14deg); }
+            40% { transform: rotate(-4deg); }
+            50% { transform: rotate(10deg); }
+            60% { transform: rotate(0deg); }
+            100% { transform: rotate(0deg); }
+        }
+
+        h1 {
+            font-size: 5rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(145deg, var(--text-primary), var(--text-secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .intro-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin: 2rem 0;
+        }
+
+        .tag {
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: 40px;
+            padding: 0.4rem 1.5rem;
+            font-size: 1rem;
+            color: var(--text-secondary);
+            transition: var(--transition);
+        }
+
+        .tag:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .intro-text {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 2rem 0;
+            line-height: 1.7;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 1.2rem;
+            flex-wrap: wrap;
+            margin: 2.5rem 0;
+        }
+
+        .btn {
+            background: transparent;
+            border: 1px solid var(--accent);
+            color: var(--text-primary);
+            padding: 0.9rem 2.5rem;
+            border-radius: 50px;
+            font-weight: 500;
+            font-size: 1rem;
+            text-decoration: none;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: var(--accent);
+            color: white;
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(227,27,35,0.3);
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background: #b01016;
+        }
+
+        .btn-download {
+            border-color: var(--text-secondary);
+        }
+
+        /* ---------- FEATURED SECTION ---------- */
+        .featured-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 4rem 0;
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: 32px;
+            padding: 2.5rem;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+
+        .feature-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-10px);
+            box-shadow: 0 20px 30px -10px rgba(227,27,35,0.3);
+        }
+
+        .feature-card i {
+            font-size: 3.5rem;
+            color: var(--accent);
+            margin-bottom: 1.2rem;
+        }
+
+        .feature-card h3 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        /* ---------- SKILLS SECTION ---------- */
+        .skills-wrapper {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 2rem;
+            background: var(--skill-bg);
+            border: 1px solid var(--border-light);
+            border-radius: 40px;
+            padding: 2rem;
+            margin: 3rem 0;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(5px);
+        }
+
+        .skill-menu {
+            border-right: 1px solid var(--border-light);
+            padding-right: 1.5rem;
+        }
+
+        .skill-menu-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.8rem 1rem;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: var(--transition);
+            color: var(--text-secondary);
+            margin-bottom: 0.3rem;
+        }
+
+        .skill-menu-item i {
+            width: 28px;
+            color: var(--accent);
+            font-size: 1.2rem;
+        }
+
+        .skill-menu-item span {
+            flex: 1;
+        }
+
+        .skill-menu-item .count {
+            background: var(--bg-card);
+            padding: 0.2rem 0.8rem;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            border: 1px solid var(--border-light);
+        }
+
+        .skill-menu-item:hover {
+            background: var(--accent-dim);
+            border-color: var(--accent);
+            color: var(--text-primary);
+        }
+
+        .skill-menu-item.active {
+            background: var(--accent-dim);
+            border: 1px solid var(--accent);
+            color: var(--text-primary);
+        }
+
+        .skill-display-area {
+            padding-left: 0.5rem;
+        }
+
+        .skill-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .skill-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+        }
+
+        .skill-chip {
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: 40px;
+            padding: 0.5rem 1.2rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            transition: var(--transition);
+            color: var(--text-secondary);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            backdrop-filter: blur(2px);
+        }
+
+        .skill-chip i {
+            color: var(--accent);
+            width: 18px;
+        }
+
+        .skill-chip:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            transform: scale(1.05) translateY(-2px);
+            background: var(--bg-secondary);
+        }
+
+        /* ---------- EXPERIENCE SECTION ---------- */
+        .experience-list {
+            position: relative;
+        }
+
+        .exp-item {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .exp-left {
+            flex: 0 0 200px;
+            text-align: right;
+        }
+
+        .exp-date {
+            color: var(--accent);
+            font-weight: 500;
+            background: var(--bg-card);
+            padding: 0.3rem 1rem;
+            border-radius: 40px;
+            display: inline-block;
+            border: 1px solid var(--border-light);
+        }
+
+        .exp-right {
+            flex: 1;
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .exp-right::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(to bottom, var(--accent), transparent);
+            border-radius: 3px;
+        }
+
+        .exp-title {
+            font-size: 1.6rem;
+            font-weight: 500;
+            margin-bottom: 0.3rem;
+            color: var(--text-primary);
+        }
+
+        .exp-company {
+            color: var(--accent);
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+
+        .exp-desc {
+            list-style: none;
+            color: var(--text-secondary);
+        }
+
+        .exp-desc li {
+            margin-bottom: 0.8rem;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .exp-desc li i {
+            color: var(--accent);
+            margin-top: 0.2rem;
+            width: 18px;
+        }
+
+        /* ---------- CASE STUDIES & PROJECTS ---------- */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .study-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: 28px;
+            overflow: hidden;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .study-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 30px -10px rgba(227,27,35,0.3);
+        }
+
+        .card-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .card-content {
+            padding: 1.8rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-content h3 {
+            font-size: 1.4rem;
+            margin-bottom: 0.8rem;
+            color: var(--text-primary);
+        }
+
+        .card-content p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 1.2rem;
+            flex: 1;
+        }
+
+        .tech-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: auto;
+        }
+
+        .tech-tag {
+            background: var(--bg-primary);
+            border-radius: 30px;
+            padding: 0.3rem 1rem;
+            font-size: 0.8rem;
+            border: 1px solid var(--border-light);
+            color: var(--text-secondary);
+            transition: var(--transition);
+        }
+
+        .tech-tag:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* ---------- HIRE ME SECTION (UPDATED FORM) ---------- */
+        .hire-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: 40px;
+            padding: 2.5rem;
+            margin: 3rem 0;
+        }
+
+        .contact-detail {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.2rem;
+            color: var(--text-secondary);
+        }
+
+        .contact-detail i {
+            color: var(--accent);
+            width: 24px;
+        }
+
+        .contact-form label {
+            display: block;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-light);
+            border-radius: 40px;
+            padding: 0.9rem 1.2rem;
+            margin-top: 0.3rem;
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            transition: var(--transition);
+        }
+
+        .contact-form input:focus,
+        .contact-form textarea:focus {
+            border-color: var(--accent);
+            outline: none;
+            box-shadow: 0 0 10px var(--accent-dim);
+        }
+
+        .contact-form button {
+            background: var(--accent);
+            border: none;
+            border-radius: 40px;
+            padding: 1rem 2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            width: 100%;
+            color: white;
+            margin-top: 0.5rem;
+        }
+
+        .contact-form button:hover {
+            background: #b01016;
+            transform: scale(1.02);
+        }
+
+        /* ---------- FOOTER ---------- */
+        .footer {
+            margin-top: 5rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-light);
+            color: var(--text-secondary);
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+
+        /* ---------- RESPONSIVE ---------- */
+        @media (max-width: 900px) {
+            h1 { font-size: 3.5rem; }
+            .skills-wrapper {
+                grid-template-columns: 1fr;
+            }
+            .skill-menu {
+                border-right: none;
+                border-bottom: 1px solid var(--border-light);
+                padding-bottom: 1.5rem;
+            }
+            .exp-item {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            .exp-left {
+                text-align: left;
+            }
+            .hire-grid {
+                grid-template-columns: 1fr;
+            }
+            .featured-grid {
+                grid-template-columns: 1fr;
+            }
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body class="dark"> <!-- default dark mode -->
+    <div class="background">
+        <div class="lightning"></div>
+    </div>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo-icon">
+                <i class="fas fa-bolt"></i>
+            </div>
+            <div class="nav-links">
+                <a href="#home" class="nav-link">Home</a>
+                <a href="#featured" class="nav-link">Featured</a>
+                <a href="#skills" class="nav-link">Skills</a>
+                <a href="#experience" class="nav-link">Experience</a>
+                <a href="#casestudies" class="nav-link">Case Studies</a>
+                <a href="#projects" class="nav-link">Projects</a>
+                <a href="#contact" class="nav-link">Hire Me</a>
+            </div>
+            <div class="theme-toggle" id="themeToggle">
+                <i class="fas fa-moon"></i>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container">
+        <!-- INTRO SECTION -->
+        <section id="home" class="intro">
+            <div class="greeting">
+                Hi, I'm Sarat Alman <i class="fas fa-hand-wave"></i>
+            </div>
+            <h1>Data Platform Architect</h1>
+            <div class="intro-tags">
+                <span class="tag">AWS</span>
+                <span class="tag">Azure</span>
+                <span class="tag">GCP</span>
+                <span class="tag">Snowflake</span>
+                <span class="tag">Kafka</span>
+                <span class="tag">Spark</span>
+                <span class="tag">Data Mesh</span>
+                <span class="tag">GenAI</span>
+            </div>
+            <p class="intro-text">
+                Results-driven Data Platform Architect with 10+ years of experience designing scalable, multi-cloud data ecosystems across AWS, Azure, and GCP. Specialized in high-throughput streaming, complex ETL/ELT pipelines, and modern Data Lakehouse architectures. Adept at integrating Data Observability and GenAI workflows to drive business value.
+            </p>
+            <div class="btn-group">
+                <a href="#contact" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Hire Me</a>
+                <a href="#casestudies" class="btn"><i class="fas fa-arrow-right"></i> Case Studies</a>
+                <a href="#" class="btn btn-download" onclick="alert('Resume download would start.')"><i class="fas fa-download"></i> Download Resume</a>
+            </div>
+        </section>
+
+        <!-- FEATURED SECTION -->
+        <section id="featured">
+            <h2>Featured</h2>
+            <div class="featured-grid">
+                <div class="feature-card">
+                    <i class="fab fa-github"></i>
+                    <h3>GitHub</h3>
+                    <p>Explore my open-source contributions, data pipelines, and sample projects on GitHub. I regularly share code for streaming, lakehouse architectures, and GenAI experiments.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-globe"></i>
+                    <h3>Personal Website</h3>
+                    <p>Visit my portfolio site for in-depth articles, case studies, and the latest updates on my work in data engineering and architecture.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SKILLS SECTION -->
+        <section id="skills">
+            <h2>Skills</h2>
+            <div class="skills-wrapper">
+                <div class="skill-menu" id="skillMenu"></div>
+                <div class="skill-display-area">
+                    <div class="skill-header">
+                        <span id="currentCategory">Programming & Scripting</span>
+                        <span id="skillCount">8 items</span>
+                    </div>
+                    <div class="skill-items" id="skillItems"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- EXPERIENCE SECTION -->
+        <section id="experience">
+            <h2>Experience</h2>
+            <div class="experience-list">
+                <div class="exp-item">
+                    <div class="exp-left"><span class="exp-date">2022 – present</span></div>
+                    <div class="exp-right">
+                        <div class="exp-title">Senior Data Engineer</div>
+                        <div class="exp-company">KPG99 INC</div>
+                        <ul class="exp-desc">
+                            <li><i class="fas fa-circle"></i> Architected scalable data pipelines & lakehouse migrations using dbt, Airflow, and Snowflake, transitioning legacy Informatica/SSIS workflows to cloud‑native for healthcare (FHIR, HL7, Claims).</li>
+                            <li><i class="fas fa-circle"></i> Engineered high‑performance ingestion with Go, Python, Kafka for EHR & IoT telemetry; real‑time dashboards in Power BI/Tableau.</li>
+                            <li><i class="fas fa-circle"></i> Championed DataOps: Terraform + GitHub Actions reduced cloud spend 20%.</li>
+                            <li><i class="fas fa-circle"></i> HIPAA/PHI compliance via Unity Catalog & Monte Carlo, monitoring 300+ batch jobs.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="exp-item">
+                    <div class="exp-left"><span class="exp-date">11/2018 – 03/2022</span></div>
+                    <div class="exp-right">
+                        <div class="exp-title">Data Engineer</div>
+                        <div class="exp-company">Clarify Health</div>
+                        <ul class="exp-desc">
+                            <li><i class="fas fa-circle"></i> Modernized enterprise data architecture: SSIS → dbt/Airflow/Snowflake lakehouses for FHIR/HL7.</li>
+                            <li><i class="fas fa-circle"></i> Built ingestion frameworks with Go, Kafka; real‑time analytics.</li>
+                            <li><i class="fas fa-circle"></i> Optimized Spark & SQL for 500M+ clinical rows; cut processing windows by 30%.</li>
+                            <li><i class="fas fa-circle"></i> Automated HIPAA/PHI compliance via Databricks Unity Catalog.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="exp-item">
+                    <div class="exp-left"><span class="exp-date">03/2016 – 11/2018</span></div>
+                    <div class="exp-right">
+                        <div class="exp-title">Associate Data Engineer</div>
+                        <div class="exp-company">Lumenalta</div>
+                        <ul class="exp-desc">
+                            <li><i class="fas fa-circle"></i> Modernized ETL: migrated Informatica/SSIS to Snowflake and SQL Server.</li>
+                            <li><i class="fas fa-circle"></i> Built Go microservices for IoT telemetry ingestion.</li>
+                            <li><i class="fas fa-circle"></i> Automated HIPAA tracking & data quality frameworks.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CASE STUDIES -->
+        <section id="casestudies">
+            <h2>Case Studies</h2>
+            <div class="card-grid">
+                <div class="study-card">
+                    <img class="card-img" src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=400&auto=format" alt="Data center">
+                    <div class="card-content">
+                        <h3>Enterprise Data Mesh & Governance</h3>
+                        <p>Architected a 5‑domain Data Mesh (Snowflake, Databricks, dbt, AWS), automating lineage and RBAC for HIPAA‑compliant onboarding. Enabled self‑serve analytics for 200+ users.</p>
+                        <div class="tech-tags">
+                            <span class="tech-tag">Data Mesh</span>
+                            <span class="tech-tag">Snowflake</span>
+                            <span class="tech-tag">Databricks</span>
+                            <span class="tech-tag">dbt</span>
+                            <span class="tech-tag">AWS</span>
+                            <span class="tech-tag">Unity Catalog</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="study-card">
+                    <img class="card-img" src="https://images.unsplash.com/photo-1677442136019-21780a5c6b8e?w=400&auto=format" alt="AI">
+                    <div class="card-content">
+                        <h3>GenAI Clinical Insights Engine</h3>
+                        <p>Real‑time RAG via Databricks, LangChain, Pinecone, and Kafka for automated healthcare risk prediction. Reduced latency from hours to seconds.</p>
+                        <div class="tech-tags">
+                            <span class="tech-tag">GenAI</span>
+                            <span class="tech-tag">Databricks</span>
+                            <span class="tech-tag">LangChain</span>
+                            <span class="tech-tag">Pinecone</span>
+                            <span class="tech-tag">Kafka</span>
+                            <span class="tech-tag">RAG</span>
+                            <span class="tech-tag">MLflow</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="study-card">
+                    <img class="card-img" src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=400&auto=format" alt="Cloud">
+                    <div class="card-content">
+                        <h3>Petabyte‑Scale Delta Lakehouse</h3>
+                        <p>Led Azure‑native migration (Delta Lake, ADF, Spark, Airflow) cutting infrastructure costs by 35% and optimizing ETL performance.</p>
+                        <div class="tech-tags">
+                            <span class="tech-tag">Delta Lake</span>
+                            <span class="tech-tag">Azure</span>
+                            <span class="tech-tag">ADF</span>
+                            <span class="tech-tag">Spark</span>
+                            <span class="tech-tag">Airflow</span>
+                            <span class="tech-tag">Databricks</span>
+                            <span class="tech-tag">Parquet</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PROJECTS -->
+        <section id="projects">
+            <h2>Projects</h2>
+            <div class="card-grid">
+                <div class="study-card">
+                    <img class="card-img" src="https://images.unsplash.com/photo-1504384764586-bb4cdc1707b0?w=400&auto=format" alt="Server">
+                    <div class="card-content">
+                        <h3>Data Mesh & Governance Platform</h3>
+                        <p>5‑domain Data Mesh with automated lineage and RBAC for HIPAA compliance.</p>
+                        <div class="tech-tags">
+                            <span class="tech-tag">Data Mesh</span>
+                            <span class="tech-tag">Snowflake</span>
+                            <span class="tech-tag">Databricks</span>
+                            <span class="tech-tag">dbt</span>
+                            <span class="tech-tag">Unity Catalog</span>
+                            <span class="tech-tag">OpenLineage</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="study-card">
+                    <img class="card-img" src="https://images.unsplash.com/photo-1677442136019-21780a5c6b8e?w=400&auto=format" alt="AI brain">
+                    <div class="card-content">
+                        <h3>GenAI Clinical Engine</h3>
+                        <p>Real‑time RAG with Databricks, LangChain, Pinecone, Kafka.</p>
+                        <div class="tech-tags">
+                            <span class="tech-tag">GenAI</span>
+                            <span class="tech-tag">LangChain</span>
+                            <span class="tech-tag">Pinecone</span>
+                            <span class="tech-tag">Kafka</span>
+                            <span class="tech-tag">Databricks</span>
+                            <span class="tech-tag">MLflow</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="study-card">
+                    <img class="card-img" src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&auto=format" alt="Migration">
+                    <div class="card-content">
+                        <h3>Delta Lakehouse Migration</h3>
+                        <p>Azure‑native migration, 35% cost reduction.</p>
+                        <div class="tech-tags">
+                            <span class="tech-tag">Delta Lake</span>
+                            <span class="tech-tag">Azure</span>
+                            <span class="tech-tag">ADF</span>
+                            <span class="tech-tag">Spark</span>
+                            <span class="tech-tag">Airflow</span>
+                            <span class="tech-tag">Databricks</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- HIRE ME (UPDATED FORM) -->
+        <section id="contact">
+            <h2>Let's Connect</h2>
+            <div class="hire-grid">
+                <div>
+                    <p style="color: var(--text-secondary); margin-bottom: 2rem;">I'm actively seeking senior data engineer roles in the US. Let's discuss how I can architect your next‑gen data platform.</p>
+                    <div class="contact-detail"><i class="fas fa-envelope"></i> Seratalman77@gmail.com</div>
+                    <div class="contact-detail"><i class="fas fa-phone-alt"></i> (774) 436-7597</div>
+                    <div class="contact-detail"><i class="fas fa-map-marker-alt"></i> Plano, TX 75252 (remote)</div>
+                    <div class="contact-detail"><i class="fas fa-flag-usa"></i> US Citizen</div>
+                </div>
+                <div class="contact-form">
+                    <form action="https://formspree.io/f/xlgpjjob" method="POST">
+                        <label>
+                            Your email:
+                            <input type="email" name="email" placeholder="Your email" required>
+                        </label>
+                        <label>
+                            Your message:
+                            <textarea name="message" rows="4" placeholder="Tell me about the opportunity..." required></textarea>
+                        </label>
+                        <button type="submit"><i class="fas fa-paper-plane"></i> Send message</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <span>© 2025 Sarat Alman – Senior Data Engineer</span>
+            <div class="footer-links">
+                <a href="#home">Home</a>
+                <a href="#featured">Featured</a>
+                <a href="#skills">Skills</a>
+                <a href="#experience">Experience</a>
+                <a href="#casestudies">Case Studies</a>
+                <a href="#contact">Hire Me</a>
+            </div>
+        </footer>
+    </main>
+
+    <script>
+        // ---------- SKILLS DATA (same as before, with icons) ----------
+        const skillsData = {
+            "Programming & Scripting": {
+                icon: "fa-code",
+                skills: [
+                    { name: "Python", icon: "fab fa-python" },
+                    { name: "Advanced SQL", icon: "fas fa-database" },
+                    { name: "Scala", icon: "fas fa-code" },
+                    { name: "Java", icon: "fab fa-java" },
+                    { name: "Golang", icon: "fas fa-code" },
+                    { name: "C#/.NET", icon: "fab fa-microsoft" },
+                    { name: "Bash", icon: "fas fa-terminal" },
+                    { name: "Shell Scripting", icon: "fas fa-terminal" }
+                ]
+            },
+            "Cloud Warehousing & Data Modeling": {
+                icon: "fa-cloud",
+                skills: [
+                    { name: "Snowflake", icon: "fas fa-snowflake" },
+                    { name: "Amazon Redshift", icon: "fab fa-aws" },
+                    { name: "Google BigQuery", icon: "fab fa-google" },
+                    { name: "Azure Synapse", icon: "fab fa-microsoft" },
+                    { name: "Teradata", icon: "fas fa-database" },
+                    { name: "SQL Server", icon: "fas fa-database" },
+                    { name: "Oracle", icon: "fas fa-database" },
+                    { name: "NoSQL", icon: "fas fa-database" },
+                    { name: "Apache Iceberg", icon: "fas fa-database" },
+                    { name: "Dimensional Modeling", icon: "fas fa-cubes" },
+                    { name: "Data Vault 2.0", icon: "fas fa-cubes" },
+                    { name: "Data Mesh", icon: "fas fa-network-wired" },
+                    { name: "Data Fabric", icon: "fas fa-network-wired" },
+                    { name: "Semantic Modeling", icon: "fas fa-brain" },
+                    { name: "Data Contracts", icon: "fas fa-file-contract" },
+                    { name: "Reverse ETL", icon: "fas fa-rotate-left" },
+                    { name: "Parquet", icon: "fas fa-file" },
+                    { name: "ORC", icon: "fas fa-file" }
+                ]
+            },
+            "Big Data, Streaming & AI Pipelines": {
+                icon: "fa-stream",
+                skills: [
+                    { name: "Apache Spark", icon: "fas fa-bolt" },
+                    { name: "Apache Kafka", icon: "fas fa-bolt" },
+                    { name: "Flink", icon: "fas fa-water" },
+                    { name: "Delta Lake", icon: "fas fa-database" },
+                    { name: "Presto", icon: "fas fa-rocket" },
+                    { name: "Beam", icon: "fas fa-sun" },
+                    { name: "Pulsar", icon: "fas fa-star" },
+                    { name: "Hadoop", icon: "fas fa-hippo" },
+                    { name: "Hive", icon: "fas fa-hippo" },
+                    { name: "HBase", icon: "fas fa-database" }
+                ]
+            },
+            "Cloud Ecosystems (AWS/Azure/GCP)": {
+                icon: "fa-cloud",
+                skills: [
+                    { name: "S3", icon: "fab fa-aws" },
+                    { name: "Glue", icon: "fab fa-aws" },
+                    { name: "Lambda", icon: "fab fa-aws" },
+                    { name: "Redshift", icon: "fab fa-aws" },
+                    { name: "Kinesis", icon: "fab fa-aws" },
+                    { name: "Lake Formation", icon: "fab fa-aws" },
+                    { name: "ADF", icon: "fab fa-microsoft" },
+                    { name: "Synapse", icon: "fab fa-microsoft" },
+                    { name: "ADLS", icon: "fab fa-microsoft" },
+                    { name: "Event Hub", icon: "fab fa-microsoft" },
+                    { name: "Azure SQL", icon: "fab fa-microsoft" },
+                    { name: "BigQuery", icon: "fab fa-google" },
+                    { name: "Dataflow", icon: "fab fa-google" },
+                    { name: "Dataproc", icon: "fab fa-google" },
+                    { name: "Pub/Sub", icon: "fab fa-google" },
+                    { name: "Vertex AI", icon: "fab fa-google" }
+                ]
+            },
+            "Domain Expertise": {
+                icon: "fa-briefcase",
+                skills: [
+                    { name: "Healthcare (FHIR, HL7, Claims, EHR, LOINC, CPT, ICD-10)", icon: "fas fa-hospital" },
+                    { name: "Financial Services", icon: "fas fa-chart-line" },
+                    { name: "Insurance", icon: "fas fa-shield-alt" },
+                    { name: "Retail & E‑commerce", icon: "fas fa-shopping-cart" },
+                    { name: "Manufacturing", icon: "fas fa-industry" },
+                    { name: "Media & Entertainment", icon: "fas fa-film" }
+                ]
+            },
+            "Data Pipelines & Orchestration": {
+                icon: "fa-etl",
+                skills: [
+                    { name: "ETL/ELT", icon: "fas fa-arrows-spin" },
+                    { name: "dbt", icon: "fas fa-cube" },
+                    { name: "Apache Airflow", icon: "fas fa-wind" },
+                    { name: "Azure Data Factory (ADF)", icon: "fab fa-microsoft" },
+                    { name: "Fivetran", icon: "fas fa-rotate" },
+                    { name: "Matillion", icon: "fas fa-cubes" },
+                    { name: "Apache NiFi", icon: "fas fa-arrows-spin" },
+                    { name: "Prefect", icon: "fas fa-bolt" },
+                    { name: "Dagster", icon: "fas fa-cubes" },
+                    { name: "Pipeline Optimization", icon: "fas fa-gauge-high" },
+                    { name: "Data Migration", icon: "fas fa-truck" },
+                    { name: "Real-Time Processing", icon: "fas fa-clock" }
+                ]
+            },
+            "Governance, Security & Observability": {
+                icon: "fa-shield-alt",
+                skills: [
+                    { name: "HIPAA", icon: "fas fa-shield" },
+                    { name: "GDPR", icon: "fas fa-shield" },
+                    { name: "CCPA", icon: "fas fa-shield" },
+                    { name: "PHI Handling", icon: "fas fa-shield" },
+                    { name: "IAM", icon: "fas fa-key" },
+                    { name: "RBAC", icon: "fas fa-key" },
+                    { name: "ABAC", icon: "fas fa-key" },
+                    { name: "Encryption", icon: "fas fa-lock" },
+                    { name: "Data Masking", icon: "fas fa-mask" },
+                    { name: "OpenLineage", icon: "fas fa-diagram-project" },
+                    { name: "Databricks Unity Catalog", icon: "fas fa-catalog" },
+                    { name: "Alation", icon: "fas fa-catalog" },
+                    { name: "Colibra", icon: "fas fa-catalog" },
+                    { name: "AWS Glue Catalog", icon: "fab fa-aws" },
+                    { name: "Microsoft Purview", icon: "fab fa-microsoft" },
+                    { name: "Great Expectations", icon: "fas fa-star" },
+                    { name: "Monte Carlo", icon: "fas fa-chart-line" }
+                ]
+            },
+            "DevOps, Infrastructure & CI/CD": {
+                icon: "fa-cogs",
+                skills: [
+                    { name: "Docker", icon: "fab fa-docker" },
+                    { name: "Kubernetes", icon: "fas fa-cubes" },
+                    { name: "Terraform", icon: "fas fa-code" },
+                    { name: "Helm", icon: "fas fa-ship" },
+                    { name: "GitHub Actions", icon: "fab fa-github" },
+                    { name: "GitLab CI/CD", icon: "fab fa-gitlab" },
+                    { name: "Azure DevOps", icon: "fab fa-microsoft" },
+                    { name: "Jenkins", icon: "fab fa-jenkins" },
+                    { name: "Ansible", icon: "fas fa-cogs" },
+                    { name: "GitOps", icon: "fas fa-code-branch" }
+                ]
+            },
+            "BI, Reporting & Analytics": {
+                icon: "fa-chart-bar",
+                skills: [
+                    { name: "Power BI", icon: "fas fa-chart-pie" },
+                    { name: "Tableau", icon: "fas fa-chart-bar" },
+                    { name: "Looker", icon: "fas fa-chart-line" },
+                    { name: "Apache Superset", icon: "fas fa-chart-simple" },
+                    { name: "Mode Analytics", icon: "fas fa-chart-gantt" }
+                ]
+            }
+        };
+
+        // Render skill menu
+        const menuEl = document.getElementById('skillMenu');
+        const skillItemsEl = document.getElementById('skillItems');
+        const currentCategoryEl = document.getElementById('currentCategory');
+        const skillCountEl = document.getElementById('skillCount');
+
+        let activeCategory = "Programming & Scripting";
+
+        function renderMenu() {
+            let html = '';
+            for (let cat in skillsData) {
+                const count = skillsData[cat].skills.length;
+                const icon = skillsData[cat].icon;
+                html += `<div class="skill-menu-item ${cat === activeCategory ? 'active' : ''}" data-category="${cat}">
+                    <i class="fas ${icon}"></i><span>${cat}</span><span class="count">${count}</span>
+                </div>`;
+            }
+            menuEl.innerHTML = html;
+
+            document.querySelectorAll('.skill-menu-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    document.querySelectorAll('.skill-menu-item').forEach(i => i.classList.remove('active'));
+                    this.classList.add('active');
+                    activeCategory = this.getAttribute('data-category');
+                    renderSkills();
+                });
+            });
+        }
+
+        function renderSkills() {
+            const skills = skillsData[activeCategory].skills;
+            currentCategoryEl.textContent = activeCategory;
+            skillCountEl.textContent = skills.length + ' items';
+            let skillsHtml = '';
+            skills.forEach(s => {
+                skillsHtml += `<span class="skill-chip"><i class="${s.icon}"></i> ${s.name}</span>`;
+            });
+            skillItemsEl.innerHTML = skillsHtml;
+        }
+
+        renderMenu();
+        renderSkills();
+
+        // Dark/Light mode toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+        const icon = themeToggle.querySelector('i');
+
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark');
+            if (body.classList.contains('dark')) {
+                icon.className = 'fas fa-moon';
+            } else {
+                icon.className = 'fas fa-sun';
+            }
+        });
+    </script>
+</body>
+</html>
